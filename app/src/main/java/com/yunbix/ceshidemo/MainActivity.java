@@ -44,15 +44,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, PhotoSelectActivity.class);
-                intent.putExtra(PhotoSelectActivity.IMAGE_NUM,9);
-                startActivityForResult(intent,0);
+                intent.putExtra(PhotoSelectActivity.IMAGE_NUM, 9);
+                startActivityForResult(intent, 0);
             }
         });
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(resultCode== Activity.RESULT_OK){
+        if (resultCode == Activity.RESULT_OK) {
             List<String> list = (List<String>) data.getSerializableExtra(PhotoSelectActivity.DATA);
         }
     }
