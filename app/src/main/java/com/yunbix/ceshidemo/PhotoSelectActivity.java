@@ -77,14 +77,14 @@ public class PhotoSelectActivity extends Activity {
                 imdata.clear();
                 for (int i = 0; i < map.size(); i++) {
                     String s = map.get(i);
-                    if(s.equals("true")){
+                    if (s.equals("true")) {
                         BaseBean bean = list.get(i);
                         imdata.add(bean.getUrl());
                     }
                 }
-                if(imdata.size()==0){
-                    Toast.makeText(PhotoSelectActivity.this,"请选择图片",Toast.LENGTH_SHORT).show();
-                }else {
+                if (imdata.size() == 0) {
+                    Toast.makeText(PhotoSelectActivity.this, "请选择图片", Toast.LENGTH_SHORT).show();
+                } else {
                     Intent intent1 = new Intent(PhotoSelectActivity.this, ImagePreviewActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putSerializable("list", (Serializable) imdata);
@@ -104,8 +104,8 @@ public class PhotoSelectActivity extends Activity {
             @Override
             public void OnVideoClick(int position) {
                 if (flag) {
-                    Intent intent1 = new Intent(PhotoSelectActivity.this,VideoPreviewActivity.class);
-                    intent1.putExtra("videopath",list.get(position).getUrl());
+                    Intent intent1 = new Intent(PhotoSelectActivity.this, VideoPreviewActivity.class);
+                    intent1.putExtra("videopath", list.get(position).getUrl());
                     startActivity(intent1);
                 } else {
                     Toast.makeText(PhotoSelectActivity.this, "您已选择图片", Toast.LENGTH_SHORT).show();
@@ -113,12 +113,17 @@ public class PhotoSelectActivity extends Activity {
             }
         });
     }
+
     private void getPath() {
                 /*获取视频列表*/
         String[] projections = {
                 MediaStore.Video.Media.DATA,
                 MediaStore.Video.Media.DURATION
         };
+
+        for (int a = 0; a < projections.length; a++) {
+            Log.e("projections", projections[a] + "");
+        }
         String orderBys = MediaStore.Video.Media.DISPLAY_NAME;
         Uri uris = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         getVideoContentProvider(uris, projections, orderBys);//视频获取报错
@@ -167,8 +172,11 @@ public class PhotoSelectActivity extends Activity {
                 }
             }
         }
+        Log.e("path", path + "");
+        Log.e("time", time + "");
         for (int i = 0; i < path.size(); i++) {
             String s = time.get(i);
+            Log.e("s", s + "");
             long l = Long.parseLong(s);
             int times = (int) l / 1000;
             if (times < 10 && times > 0) {
@@ -296,17 +304,17 @@ public class PhotoSelectActivity extends Activity {
                     @Override
                     public void onClick(View view) {
                         String s = map.get(getAdapterPosition());
-                        if(s.equals("true")){
+                        if (s.equals("true")) {
                             image_mCheckBox.setImageResource(R.mipmap.no);
                             map.put(getAdapterPosition(), "false");
-                        }else{
-                            if (getmapsize()<intExtra) {
+                        } else {
+                            if (getmapsize() < intExtra) {
                                 image_mCheckBox.setImageResource(R.mipmap.ok);
-                                map.put(getAdapterPosition(),"true");
-                            }else {
+                                map.put(getAdapterPosition(), "true");
+                            } else {
                                 image_mCheckBox.setImageResource(R.mipmap.no);
-                                Toast.makeText(context,"您已选择"+intExtra+"张图片",Toast.LENGTH_SHORT).show();
-                                map.put(getAdapterPosition(),"false");
+                                Toast.makeText(context, "您已选择" + intExtra + "张图片", Toast.LENGTH_SHORT).show();
+                                map.put(getAdapterPosition(), "false");
                             }
                         }
                         if (getmapsize() == 0) {
@@ -320,17 +328,17 @@ public class PhotoSelectActivity extends Activity {
                     @Override
                     public void onClick(View view) {
                         String s = map.get(getAdapterPosition());
-                        if(s.equals("true")){
+                        if (s.equals("true")) {
                             image_mCheckBox.setImageResource(R.mipmap.no);
                             map.put(getAdapterPosition(), "false");
-                        }else{
-                            if (getmapsize()<intExtra) {
+                        } else {
+                            if (getmapsize() < intExtra) {
                                 image_mCheckBox.setImageResource(R.mipmap.ok);
-                                map.put(getAdapterPosition(),"true");
-                            }else {
+                                map.put(getAdapterPosition(), "true");
+                            } else {
                                 image_mCheckBox.setImageResource(R.mipmap.no);
-                                Toast.makeText(context,"您已选择"+intExtra+"张图片",Toast.LENGTH_SHORT).show();
-                                map.put(getAdapterPosition(),"false");
+                                Toast.makeText(context, "您已选择" + intExtra + "张图片", Toast.LENGTH_SHORT).show();
+                                map.put(getAdapterPosition(), "false");
                             }
                         }
                         if (getmapsize() == 0) {
@@ -341,8 +349,9 @@ public class PhotoSelectActivity extends Activity {
                     }
                 });
             }
-            private  int getmapsize(){
-                int count=0;
+
+            private int getmapsize() {
+                int count = 0;
                 for (int i = 0; i < map.size(); i++) {
                     String s = map.get(i);
                     if (s.equals("true")) {
@@ -353,8 +362,9 @@ public class PhotoSelectActivity extends Activity {
             }
         }
     }
+
     @Subscribe
-    public void videoEvent(VideoMsg msg){
+    public void videoEvent(VideoMsg msg) {
         data.clear();
         data.add(msg.getUrl());
         Intent intent1 = new Intent();
@@ -364,8 +374,9 @@ public class PhotoSelectActivity extends Activity {
         setResult(Activity.RESULT_OK, intent1);
         finish();
     }
+
     @Subscribe
-    public void ImageEvent(ImageMsg msg){
+    public void ImageEvent(ImageMsg msg) {
         imdata.clear();
         imdata.addAll(msg.getList());
         Intent intent1 = new Intent();
@@ -375,6 +386,7 @@ public class PhotoSelectActivity extends Activity {
         setResult(Activity.RESULT_OK, intent1);
         finish();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
